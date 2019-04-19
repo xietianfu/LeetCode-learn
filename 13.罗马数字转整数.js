@@ -65,8 +65,60 @@
  * 解释: M = 1000, CM = 900, XC = 90, IV = 4.
  *
  */
+
 /**
  * @param {string} s
  * @return {number}
  */
-var romanToInt = function(s) {};
+var romanToInt = function(s) {
+  let result = 0;
+  let newS = s;
+  const unit = {
+    I: 1,
+    V: 5,
+    X: 10,
+    L: 50,
+    C: 100,
+    D: 500,
+    M: 1000,
+  };
+  const specialRule = {
+    IV: {
+      value: 4,
+      reg: /IV/g,
+    },
+    IX: {
+      value: 9,
+      reg: /IX/g,
+    },
+    XL: {
+      value: 40,
+      reg: /XL/g,
+    },
+    XC: {
+      value: 90,
+      reg: /XC/g,
+    },
+    CD: {
+      value: 400,
+      reg: /CD/g,
+    },
+    CM: {
+      value: 900,
+      reg: /CM/g,
+    },
+  };
+  Object.values(specialRule).forEach(val => {
+    console.log(newS.match(val.reg));
+    if (newS.match(val.reg)) {
+      const len = newS.match(val.reg).length;
+      console.log(len);
+      result = result + len * val.value;
+      newS = newS.replace(val.reg, '');
+    }
+  });
+  Array.from(newS).forEach(item => {
+    result += unit[item];
+  });
+  return result;
+};
