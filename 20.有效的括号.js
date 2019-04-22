@@ -53,37 +53,36 @@
  *
  */
 
-const symbolList = {
-  '[': ']',
-  '{': '}',
-  '(': ')',
-};
-
 /**
  * @param {string} s
  * @return {boolean}
  */
 var isValid = function(s) {
+  this.s = s;
   const symbolList = {
     '[': ']',
     '{': '}',
     '(': ')',
   };
-  if (s.length < 1 || s.length % 2 === 1) {
+  if (s.length % 2 === 1) {
     return false;
   }
-  let aArr = Array.from(s);
-  while (aArr.length > 0) {
-    const left = symbolList[aArr.shift()];
-    const right = aArr.pop();
-    if (left != right) {
+  if (s === '') {
+    return true;
+  }
+  const reg = /(\(\))|(\{\})|(\[\])/g;
+  let len = this.s.length;
+  while (len > 0) {
+    this.s = this.s.replace(reg, '');
+    if (this.s.length === len) {
       return false;
     }
+    len = this.s.length;
   }
   return true;
 };
 
-console.log(isValid('{(])}'));
+console.log(isValid('[()](())'));
 // note: 1. 字符串为空或者长度为1时，为false
 // note: 2. 字符串长度为奇数时，为false
-// note: 3.
+// note: 3. 通过替换前和替换后长度比较，如果不为0，同时长度没有变化则为false
